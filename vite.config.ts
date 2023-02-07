@@ -9,8 +9,8 @@ const typingSrc = path.resolve(__dirname, 'types')
 export default defineConfig({
   resolve: {
     alias: {
-      '~/': `${typingSrc}`,
-      '@/': `${pathSrc}`,
+      '~/': `${typingSrc}/`,
+      '@/': `${pathSrc}/`,
     }
   },
   plugins: [react()],
