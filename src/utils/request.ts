@@ -25,17 +25,37 @@ axios.interceptors.response.use(
     const userStatus = localStorage.getItem("userStatus");
     const data = response.data;
     if (response.status == 200) {
-      if (data.status == 20003) {
+      if (data.status == 10005) {
         if (userStatus == "login") {
           if (!isRefreshing) {
             isRefreshing = true;
-            // return updateToken()
+            return updateToken().then(res => {
+              const { access_token } = res.data.data;
+              localStorage.setItem('token', access_token);
+              response.config.headers.Authorization = `Bearer ${access_token}`;
+              requests.forEach(cb => cb(access_token));
+              requests = [];
+              return axios(response.config);
+            }).catch(err => {
+              localStorage.removeItem('token');
+              window.location.hash = '#/login';
+              return Promise.reject(err);
+            }).finally(() => {
+              isRefreshing = false;
+            })
+          } else {
+            return new Promise((res) => {
+              requests.push(token => {
+                response.config.headers.Authorization = `Bearer ${token};`;
+                res(axios(response.config));
+              })
+            })
           }
         }
       }
     } else {
-      return data;
     }
+    return data;
     return Promise.reject(new Error(response.statusText || "Error"));
   },
   (error) => {
@@ -89,5 +109,14 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+function updateToken() {
+  const refresh_token = localStorage.getItem('refresh_token');
+  return Axios.post('/api/user/refresh', {}, {
+    headers: {
+      'Authorization': 'Bearer ' + refresh_token
+    }
+  })
+}
 
 export default axios;

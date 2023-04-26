@@ -16,18 +16,20 @@ import useStorage from "@/utils/useStorage";
 import useLocale from "@/utils/useLocale";
 import locale from "./locale";
 import styles from "./style/index.module.less";
+import { useRecoilState } from "recoil";
+import { globalState } from "@/store/atom";
 
 export default function LoginForm() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const formRef = useRef<FormInstance>();
   const [errorMessage, setErrorMessage] = useState("");
   const [tipVisible, setTipVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [, setToken] = useStorage("token");
+  const [, setRreshToken] = useStorage("refresh_token");
   const [, setUserStatus] = useStorage("userStatus");
-  const [, setAvatar] = useStorage("userAvatar");
-  const [, setUserId] = useStorage("userId");
-  // const [] =
+  const [, setPermission] = useStorage("permission");
+  const [global, setGlobal] = useRecoilState(globalState);
 
   const t = useLocale(locale);
   function forgetTip() {
@@ -37,30 +39,27 @@ export default function LoginForm() {
     setErrorMessage("");
     setLoading(true);
     try {
-      const res = await axios({
-        method: "POST",
-        url: "/account-system/back/login",
-        data: params,
-      });
+      const res = await axios.post(`/user/login`, params);
       if (res.status === 50099) {
         // @ts-ignore
         setErrorMessage(res.info || t["login.from.login.errMsg"]);
         setLoading(false);
       } else {
-        setToken(res.data.token);
+        setToken(res.data.access_token);
         setUserStatus("login");
-        const data = res.data.token;
-
-        setAvatar(data.avatar);
-        setUserId(data.id);
-
+        setPermission(res.data.permission);
+        setRreshToken(res.data.refresh_token);
+        setGlobal({
+          ...global,
+          userInfo: { permissions: res.data.permission },
+        });
         setLoading(false);
-        // navigate("/", { replace: true });
+        navigate("/", { replace: true });
       }
     } catch (error) {
       Notification.error({
         title: `请求错误`,
-        content: error.response.data?.info || "Error",
+        content: error.response?.data?.info || "Error",
         duration: 1500,
       });
       setUserStatus("logout");
@@ -81,7 +80,7 @@ export default function LoginForm() {
       <div className={styles["login-form-error-msg"]}>{errorMessage}</div>
       <Form className={styles["login-form"]} layout="vertical" ref={formRef}>
         <Form.Item
-          field="account"
+          field="user_name"
           rules={[{ required: true, message: t["login.form.account.errMsg"] }]}
         >
           <Input

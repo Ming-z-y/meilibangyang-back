@@ -20,5 +20,19 @@ export default defineConfig({
         javascriptEnabled: true
       }
     }
-  }
+  },
+  server: {
+    hmr: { overlay: false },
+    host: '0.0.0.0',
+    port: 8082,
+    open: true,
+    cors: true,
+    proxy: {
+      '/api': {
+        target: 'http://120.26.125.147:8081/back',
+        changeOrigin: true,
+        rewrite: (path: string): string => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 })
