@@ -7,9 +7,10 @@ import styles from "./style/index.module.less";
 function Footer(props: FooterProps = {}) {
   const { className, ...restProps } = props;
   return (
-    <Layout.Footer className={cs(styles.footer, className)} {...restProps}>
-      COPYRIGHT©红岩网校工作站
-    </Layout.Footer>
+    <Layout.Footer
+      className={cs(styles.footer, className)}
+      {...restProps}
+    ></Layout.Footer>
   );
 }
 

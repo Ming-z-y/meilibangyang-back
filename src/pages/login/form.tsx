@@ -76,7 +76,9 @@ export default function LoginForm() {
   return (
     <div className={styles["login-form-wrapper"]}>
       <div className={styles["login-form-title"]}>{t["login.form.title"]}</div>
-      <div className={styles["login-form-sub-title"]}>Login to Boys diary</div>
+      <div className={styles["login-form-sub-title"]}>
+        Login to Charming role models
+      </div>
       <div className={styles["login-form-error-msg"]}>{errorMessage}</div>
       <Form className={styles["login-form"]} layout="vertical" ref={formRef}>
         <Form.Item

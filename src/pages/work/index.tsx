@@ -195,7 +195,7 @@ export const Work = () => {
 
   return (
     <>
-      <Search val={val} setVal={setVal} />
+      {/* <Search val={val} setVal={setVal} /> */}
       <Tabs
         type="card"
         items={["已通过", "待审核"].map((item, i) => {

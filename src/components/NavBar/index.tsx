@@ -76,7 +76,7 @@ function Navbar({}: { show: boolean }) {
       <div className={styles.left}>
         <div className={styles.logo}>
           <img src={Logo}></img>
-          <div className={styles["logo-name"]}>男生日记</div>
+          <div className={styles["logo-name"]}>魅力榜样</div>
         </div>
       </div>
       <ul className={styles.right}>
