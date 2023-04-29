@@ -17,7 +17,7 @@ export const useDeleteAccount = () => {
 
   return useMutation(async (user_id: string) => {
     const result: Response = await axios.delete(`/buser`, {
-      data: JSON.stringify({user_id})
+      data: {user_id}
     });
     afterRequest(
       result,
