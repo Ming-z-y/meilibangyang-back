@@ -51,6 +51,9 @@ axios.interceptors.response.use(
               })
             })
           }
+        } else {
+          window.location.hash = '#/login';
+          return Promise.reject('');
         }
       }
     } else {

@@ -7,6 +7,7 @@ const pathSrc = path.resolve(__dirname, 'src');
 const typingSrc = path.resolve(__dirname, 'types')
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
   resolve: {
     alias: {
       '~/': `${typingSrc}/`,

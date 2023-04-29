@@ -81,11 +81,7 @@ function Navbar({}: { show: boolean }) {
       </div>
       <ul className={styles.right}>
         <li>
-          <Link
-            target="_blank"
-            href="https://redrock.feishu.cn/docx/doxcn4VDtHNi6es7N953YAd5LTf"
-            icon
-          >
+          <Link href="javascript:;" icon>
             {t["navbar.help"]}
           </Link>
           {/* <Input.Search
